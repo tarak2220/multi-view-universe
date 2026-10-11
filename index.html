@@ -1,69 +1,292 @@
-```html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Multi View Universe</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#10131b;color:white;font-family:Arial,sans-serif}
-header{text-align:center;padding:20px;background:#191e2b}
-h1{color:#65d7ff;margin:0 0 8px}
-.layout{display:flex;gap:20px;padding:20px;max-width:1500px;margin:auto}
-.viewer{flex:1;min-width:0;min-height:70vh;display:flex;align-items:center;justify-content:center;background:#080a10;border-radius:12px;padding:10px}
-#exhibitImage{max-width:100%;max-height:75vh;object-fit:contain}
-.controls{width:230px;flex-shrink:0;background:#191e2b;padding:16px;border-radius:12px}
-button{width:100%;padding:12px;margin:5px 0;border:1px solid #3b4b65;border-radius:7px;background:#252e40;color:white;cursor:pointer;font-size:15px}
-button:hover,button.active{background:#087ea4}
-#status{color:#9ee9ff;font-size:14px}
-@media(max-width:700px){.layout{flex-direction:column}.viewer,.controls{width:100%;min-height:40vh}.controls button{width:48%}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Multi View Universe | Interactive Exhibit</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #202b40, #080a10 75%);
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        header {
+            text-align: center;
+            padding: 22px 15px;
+            background: rgba(25, 30, 43, 0.95);
+            border-bottom: 1px solid #34435b;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+            color: #65d7ff;
+            font-size: clamp(25px, 4vw, 38px);
+        }
+
+        header p {
+            margin: 0;
+            color: #c1cada;
+        }
+
+        .layout {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1600px;
+            margin: auto;
+            align-items: stretch;
+        }
+
+        .viewer {
+            flex: 1;
+            min-width: 0;
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 15px;
+            background: #05070c;
+            border: 1px solid #29354a;
+            border-radius: 14px;
+        }
+
+        #exhibitImage {
+            display: block;
+            width: 100%;
+            height: 70vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .controls {
+            width: 250px;
+            flex-shrink: 0;
+            padding: 20px;
+            background: rgba(25, 30, 43, 0.96);
+            border: 1px solid #34435b;
+            border-radius: 14px;
+        }
+
+        .controls h2 {
+            margin-top: 0;
+            font-size: 21px;
+            color: #65d7ff;
+        }
+
+        .controls button {
+            display: block;
+            width: 100%;
+            padding: 13px 10px;
+            margin: 9px 0;
+            border: 1px solid #3b4b65;
+            border-radius: 8px;
+            background: #252e40;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .controls button:hover {
+            background: #075d7b;
+            border-color: #65d7ff;
+        }
+
+        .controls button.active {
+            background: #087ea4;
+            border-color: #65d7ff;
+        }
+
+        #status {
+            min-height: 40px;
+            margin-top: 16px;
+            padding: 10px;
+            background: #111827;
+            border-radius: 7px;
+            color: #9ee9ff;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .hint {
+            margin-top: 14px;
+            color: #9daac0;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            color: #8e9bb0;
+            font-size: 12px;
+        }
+
+        @media (max-width: 750px) {
+            .layout {
+                flex-direction: column;
+                padding: 12px;
+            }
+
+            .viewer {
+                min-height: 45vh;
+            }
+
+            #exhibitImage {
+                height: 45vh;
+            }
+
+            .controls {
+                width: 100%;
+            }
+
+            .controls button {
+                display: inline-block;
+                width: calc(50% - 8px);
+                margin: 4px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<header>
-<h1>Multi View Universe</h1>
-<p>Interactive Exhibit Display System</p>
-</header>
-<main class="layout">
-<section class="viewer">
-<img id="exhibitImage" src="./Multi%20View%20Universe%20Exhibit.png" alt="Exhibit image">
-</section>
-<aside class="controls">
-<h2>Exhibit Controls</h2>
-<button data-view="0" class="active">Welcome</button>
-<button data-view="1">View 1</button>
-<button data-view="2">View 2</button>
-<button data-view="3">View 3</button>
-<button data-view="4">View 4</button>
-<button data-view="5">View 5</button>
-<button data-view="6">View 6</button>
-<button data-view="restart">Restart</button>
-<p id="status">Welcome screen</p>
-</aside>
-</main>
-<script>
-const img=document.getElementById("exhibitImage");
-const status=document.getElementById("status");
-const buttons=document.querySelectorAll("[data-view]");
-function showView(v){
-if(v==="restart"||v==="0"){
-v="0";
-img.src="./Multi%20View%20Universe%20Exhibit.png";
-status.textContent="Welcome screen";
-}else{
-img.src="./multi%20view%20universe/"+v+".jpg";
-status.textContent="Displaying View "+v;
-}
-buttons.forEach(b=>b.classList.toggle("active",b.dataset.view===v));
-}
-img.onerror=()=>{status.textContent="Image not found. Check the image files in GitHub."};
-buttons.forEach(b=>b.addEventListener("click",()=>showView(b.dataset.view)));
-document.addEventListener("keydown",e=>{
-if(/^[0-6]$/.test(e.key))showView(e.key);
-if(e.key.toLowerCase()==="r")showView("restart");
-});
-</script>
+    <header>
+        <h1>Multi View Universe</h1>
+        <p>Interactive Exhibit Display System</p>
+    </header>
+
+    <main class="layout">
+        <section class="viewer">
+            <img
+                id="exhibitImage"
+                src="./Multi%20View%20Universe%20Exhibit.png"
+                alt="Multi View Universe Welcome Display"
+            >
+        </section>
+
+        <aside class="controls">
+            <h2>Exhibit Controls</h2>
+
+            <button type="button" data-view="0" class="active">
+                Welcome
+            </button>
+
+            <button type="button" data-view="1">View 1</button>
+            <button type="button" data-view="2">View 2</button>
+            <button type="button" data-view="3">View 3</button>
+            <button type="button" data-view="4">View 4</button>
+            <button type="button" data-view="5">View 5</button>
+            <button type="button" data-view="6">View 6</button>
+
+            <button type="button" id="restartButton">Restart / Welcome</button>
+
+            <div id="status" role="status" aria-live="polite">
+                Welcome display loaded.
+            </div>
+
+            <p class="hint">
+                Select a view to display its image.<br>
+                Keyboard shortcuts: 0–6 to select a view, R to return to Welcome.
+            </p>
+        </aside>
+    </main>
+
+    <footer>
+        Multi View Universe — Interactive Exhibit Display System
+    </footer>
+
+    <script>
+        "use strict";
+
+        const image = document.getElementById("exhibitImage");
+        const status = document.getElementById("status");
+        const buttons = document.querySelectorAll("[data-view]");
+        const restartButton = document.getElementById("restartButton");
+
+        const welcomeImage = "./Multi%20View%20Universe%20Exhibit.png";
+
+        let currentView = 0;
+
+        function showView(view) {
+            const selectedView = Number(view);
+
+            if (!Number.isInteger(selectedView) ||
+                selectedView < 0 ||
+                selectedView > 6) {
+                status.textContent = "Invalid view selected.";
+                return;
+            }
+
+            currentView = selectedView;
+
+            buttons.forEach((button) => {
+                const isActive = Number(button.dataset.view) === currentView;
+                button.classList.toggle("active", isActive);
+                button.setAttribute("aria-pressed", String(isActive));
+            });
+
+            if (currentView === 0) {
+                status.textContent = "Loading Welcome display...";
+                image.alt = "Multi View Universe Welcome Display";
+                image.src = welcomeImage;
+            } else {
+                status.textContent = "Loading View " + currentView + "...";
+                image.alt = "Multi View Universe - View " + currentView;
+
+                // GitHub Pages images are stored in the root images folder.
+                image.src = "./images/" + currentView + ".jpg";
+            }
+        }
+
+        image.addEventListener("load", () => {
+            status.textContent = currentView === 0
+                ? "Welcome display loaded successfully."
+                : "View " + currentView + " loaded successfully.";
+        });
+
+        image.addEventListener("error", () => {
+            status.textContent =
+                "Could not load the image. Check the images folder and file names.";
+        });
+
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                showView(button.dataset.view);
+            });
+        });
+
+        restartButton.addEventListener("click", () => {
+            showView(0);
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.target instanceof HTMLInputElement ||
+                event.target instanceof HTMLTextAreaElement) {
+                return;
+            }
+
+            if (/^[0-6]$/.test(event.key)) {
+                showView(Number(event.key));
+            } else if (event.key.toLowerCase() === "r") {
+                showView(0);
+            }
+        });
+
+        // Display the Welcome screen when the website opens.
+        showView(0);
+    </script>
 </body>
 </html>
-```
