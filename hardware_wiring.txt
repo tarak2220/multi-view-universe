@@ -1,0 +1,23 @@
+MULTI VIEW UNIVERSE — RASPBERRY PI 3 BUTTON WIRING
+
+Use BCM pin numbering (not physical pin numbering). Each momentary push button connects between its listed GPIO pin and any GND pin.
+The program uses the Raspberry Pi internal pull-up resistor. Do NOT connect any GPIO pin to 5V.
+
+Button            BCM GPIO     Physical header pin     Other button leg
+Welcome           GPIO 5       Pin 29                  GND
+View 1            GPIO 6       Pin 31                  GND
+View 2            GPIO 13      Pin 33                  GND
+View 3            GPIO 16      Pin 36                  GND
+View 4            GPIO 19      Pin 35                  GND
+View 5            GPIO 20      Pin 38                  GND
+View 6            GPIO 21      Pin 40                  GND
+Restart           GPIO 26      Pin 37                  GND
+
+Ground choices: physical pin 6, 9, 14, 20, 25, 30, 34, or 39 are GND. You can use a shared ground rail on the breadboard.
+
+Wiring notes:
+- Power off the Raspberry Pi before wiring.
+- Each button must be a normally-open momentary push button.
+- Connect one leg of each button to its GPIO and the other leg to GND.
+- Do not supply 3.3V or 5V to a GPIO input for this setup.
+- If your button has four legs, identify the two opposite sides of the switch; legs on the same side may already be connected internally.

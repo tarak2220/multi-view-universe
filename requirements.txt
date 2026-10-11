@@ -1,0 +1,2 @@
+Flask>=3.0,<4.0
+# On Raspberry Pi OS, install RPi.GPIO if it is not already available.

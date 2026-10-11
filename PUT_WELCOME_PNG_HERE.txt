@@ -1,0 +1,2 @@
+Place your welcome image in this folder and name it exactly:
+Multi View Universe Exhibit.png
